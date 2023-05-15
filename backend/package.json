@@ -1,0 +1,23 @@
+{
+	"name": "backend",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "nodemon ./src/main.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"dotenv": "^16.0.3",
+		"koa": "^2.14.2",
+		"koa-body": "^6.0.1",
+		"koa-parameter": "^3.0.1",
+		"koa-static": "^5.0.0",
+		"mysql2": "^3.3.1",
+		"nodemon": "^2.0.22",
+		"sequelize": "^6.31.1"
+	}
+}
