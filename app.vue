@@ -1,16 +1,20 @@
 <template>
   <div>
-    <NuxtLayout>
       <NuxtPage />
-    </NuxtLayout>
   </div>
 </template>
 
 <script setup lang="ts">
 
-// nuxt 内置的hooks函数
+const layout = 'user-manage'
+
+// definePageMeta({
+//   layout: false,
+// });
+
 const {name} = useAppConfig()
 console.log(name)
+
 // 统一设置title的地方
 useHead({
   titleTemplate(title){
@@ -18,10 +22,8 @@ useHead({
   }
 })
 
-// onMounted 不用引入
-// useState 是nuxt 内置的hooks 类react
-// useLocalStorage 
 onMounted(()=> {
+
   const currentUserFromStorage = useLocalStorage('currentUser')
   console.log(currentUserFromStorage,'////')
 
