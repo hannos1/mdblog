@@ -1,6 +1,5 @@
 export type PostFile = {
     id:number;
-    
 }
 
 export type PostUser = {

@@ -1,19 +1,18 @@
 <template>
-  <div>
+    <NuxtLayout :name="layout_name">
       <NuxtPage />
-  </div>
+    </NuxtLayout>
 </template>
 
 <script setup lang="ts">
+const route = useRoute()  // 当前路由
 
-const layout = 'user-manage'
+const {name} = useAppConfig() // 项目名称
 
-// definePageMeta({
-//   layout: false,
-// });
-
-const {name} = useAppConfig()
-console.log(name)
+// 布局类型名
+let layout_name = computed(() => {
+    return useLayoutType(route.path)
+})
 
 // 统一设置title的地方
 useHead({
@@ -33,3 +32,7 @@ onMounted(()=> {
   }
 })
 </script>
+
+<style>
+@import '~/assets/styles/main.css';
+</style>
