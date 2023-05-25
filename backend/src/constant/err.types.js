@@ -49,13 +49,18 @@ module.exports = {
         message: '修改密码失败'
     },
     publishError: {
-        statusCode: '1204',
+        statusCode: 1401,
         message: "上传文件失败",
         result: {}
     },
     errDateType: {
-        statusCode: '20002',
+        statusCode: 1402,
         message: "文件格式不是md格式",
+        result: {}
+    },
+    uploadError: {
+        statusCode: 1403,
+        message: "头像上传失败",
         result: {}
     }
 }

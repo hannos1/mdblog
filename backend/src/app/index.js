@@ -2,13 +2,17 @@
 const path = require('path');
 // 第三方模块
 const Koa = require('koa'); // koa是一个类，调用需要实例化
+const serve = require('koa-static');
 const cors = require('koa-cors')
 const { koaBody } = require('koa-body');
 const parameter = require('koa-parameter'); // 参数校验
 // 自定义模块
 const router = require('../router/index.js');
+const { ROOT_DIR } = require('../config/config.default.js');
 
 const app = new Koa();
+// 设置静态资源目录
+app.use(serve(ROOT_DIR,'/public'));
 app.use(parameter(app));
 app.use(koaBody({
     multipart: true, // 开启文件上传

@@ -1,9 +1,8 @@
 const Router = require('koa-router');
 const router = new Router({ prefix: '/user' });  // 以下编写的路径自动添加该前缀
 const { auth } = require('../middleware/auth.middleware')
-const { register, login, changePassword, searchUserByName } = require('../controller/users.controller');
+const { register, login, changePassword, searchUserByName, avatarUpload } = require('../controller/users.controller');
 const { userValidator, verifyUser, crpytPassword, verifyLogin, checkPasswordsAreSame } = require('../middleware/users.middleware');
-const { compressPicture } = require('../middleware/picture.middleware');
 
 // 注册接口
 router.post('/register', userValidator, checkPasswordsAreSame, verifyUser, crpytPassword, register);
@@ -14,6 +13,6 @@ router.post('/updateInfo', auth, crpytPassword, changePassword)
 // 根据用户名查询信息
 router.post('/queryByName', auth, searchUserByName);
 // 上传图片
-router.post('/avatarUpload', auth, compressPicture)
+router.post('/avatarUpload', auth, avatarUpload)
 
 module.exports = router;

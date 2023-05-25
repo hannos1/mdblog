@@ -5,7 +5,6 @@ const { tokenExpiredError,invalidToken,hasNotAdminPermission } = require('../con
 const auth = async (ctx,next) => {  // 验证用户
     const { authorization } = ctx.request.header;   // token 在放在authorization中
     const token = authorization.replace('Bearer ','');
-    console.log(token);
     try {
         const user = jwt.verify(token,JWT_SECRET);
         ctx.state.user = user;
