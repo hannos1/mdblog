@@ -26,7 +26,12 @@
                 <n-skeleton text :repeat="2" /> 
                 <n-skeleton text :repeat="1" style="width: 70%" /> 
             </div>
-            <div class="w-full px-6 pt-4 h-auto hover:bg-slate-100 hover:cursor-pointer" v-for="item in 3" :key="item">
+            <div class="section w-full relative px-6 pt-4 h-auto hover:bg-slate-100 hover:cursor-pointer" v-for="item in 3" :key="item">
+                <div class="nolike absolute right-6 top-4 w-5 h-5 invisible">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="rgb(148 163 184)" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </div>
                 <div class="author w-full h-5 flex items-center" >
                     <div class="w-auto relative mr-4 h-5 leading-5 text-slate-500 hover:text-blue-400">掘金小册</div>
                     <div class="w-auto relative mr-4 h-5 leading-5 text-slate-400 hover:text-blue-400">3小时前</div>
@@ -64,7 +69,6 @@ onMounted(() => {
     setTimeout(() => {
         isloading.value = false
     }, 2000);
-
     
 })
 
@@ -117,5 +121,13 @@ onMounted(() => {
 
 .liked:hover span{
     color: blueviolet;
+}
+
+.section:hover .nolike{
+    visibility: visible;
+}
+
+.nolike > svg:hover{
+    stroke: blueviolet;
 }
 </style>
