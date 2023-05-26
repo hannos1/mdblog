@@ -35,46 +35,46 @@
 </template>
 
 <script setup lang="ts">
-import type { PostList } from '~~/types/post.type';
-const {public:{apiBaseUrl}} = useRuntimeConfig()
-// ?a=1&b=2 {a:1,b:2}
-const {
-    query:{
-        page:pageNumber  // es6的解构重命名
-    }
-} = useRoute()
+// import type { PostList } from '~~/types/post.type';
+// const {public:{apiBaseUrl}} = useRuntimeConfig()
+// // ?a=1&b=2 {a:1,b:2}
+// const {
+//     query:{
+//         page:pageNumber  // es6的解构重命名
+//     }
+// } = useRoute()
 
-const router = useRouter()
+// const router = useRouter()
 
-const page = ref(pageNumber ? parseInt(`${pageNumber}`,10) : 1)
-// hooks 编程 使用vueuse hooks库编写过hooks函数
+// const page = ref(pageNumber ? parseInt(`${pageNumber}`,10) : 1)
+// // hooks 编程 使用vueuse hooks库编写过hooks函数
 
-const backward = () => {
-    page.value--;
-    updateQurey()
-}
-const forward = () => {
-    page.value++;
-    updateQurey()
-}
+// const backward = () => {
+//     page.value--;
+//     updateQurey()
+// }
+// const forward = () => {
+//     page.value++;
+//     updateQurey()
+// }
 
-const updateQurey = () => {
-    router.push({query:{page:page.value}})
-}
+// const updateQurey = () => {
+//     router.push({query:{page:page.value}})
+// }
 
-const {
-    data:posts,
-    pending,
-    refresh,
-    error
-} = await useApiFetch<PostList>(() => `posts?page=${page.value}`)
-refresh()
-// console.log(posts)
-watch(useRoute(), ({query}) => {
-    if(query.page === undefined){
-        page.value = 1
-    }
-})
+// const {
+//     data:posts,
+//     pending,
+//     refresh,
+//     error
+// } = await useApiFetch<PostList>(() => `posts?page=${page.value}`)
+// refresh()
+// // console.log(posts)
+// watch(useRoute(), ({query}) => {
+//     if(query.page === undefined){
+//         page.value = 1
+//     }
+// })
 
 </script>
 

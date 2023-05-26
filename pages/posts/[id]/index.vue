@@ -11,21 +11,21 @@
 </template>
 
 <script setup lang="ts">
-import type {Post} from '~~/types/post.type'
+// import type {Post} from '~~/types/post.type'
 
-const {
-    params:{ id }
-} = useRoute()
+// const {
+//     params:{ id }
+// } = useRoute()
 
-const {
-    public:{ apiBaseUrl }
-} = useRuntimeConfig()
+// const {
+//     public:{ apiBaseUrl }
+// } = useRuntimeConfig()
 
-const {data:post} = await useApiFetch<Post>(`posts/${id}`)
+// const {data:post} = await useApiFetch<Post>(`posts/${id}`)
 
-if(!post.value){
-    showError({statusCode:404,message:'没找到内容页面'})
-}
+// if(!post.value){
+//     showError({statusCode:404,message:'没找到内容页面'})
+// }
 </script>
 
 <style scoped>

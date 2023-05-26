@@ -7,3 +7,5 @@ node_modules
 .env
 dist
 mock/
+__test__
+babel.config.js
