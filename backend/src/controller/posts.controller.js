@@ -1,5 +1,6 @@
 const { publishError } = require('../constant/err.types');
-const { searchHasLimit, publishPost } = require('../service/posts.service')
+const { searchHasLimit, publishPost, searchPosts } = require('../service/posts.service')
+const { getUserInfo } = require('../service/users.service')
 // 控制层，是路由的最后一个需要调用的函数，不需要再使用next放行了
 class PostsController {
     async getInitData(ctx, next) {
@@ -8,14 +9,11 @@ class PostsController {
 
     }
     async publish(ctx, next) {
-        if(ctx.body.request.articleNum === 'undefined') {
-            ctx.body.request.articleNum = 10;   // 设置默认值
-        }
-
         try {
-            const res = await publishPost(ctx.request.body);
+            const user = await getUserInfo({ username: ctx.request.body.username });
+            const res = await publishPost({ ...ctx.request.body, userId: user.id });
             ctx.body = {
-                statusCode: 1200,
+                statusCode: 1201,
                 message: '上传成功',
                 result: {
                     articleId: res.id,
@@ -26,6 +24,29 @@ class PostsController {
             };
         } catch (e) {
             ctx.body = publishError;
+        }
+    }
+    async searchByName(ctx, next) { // 根据用户名分页查询
+        const { username, page, rows } = ctx.query;
+        try {
+            const res = await searchPosts({ username, page, rows });
+            const data = res.map(post => {
+                return {
+                    articleId: post.id,
+                    deployDate: post.createdAt,
+                    title: post.title,
+                    summary: post.summary
+                }
+            });
+            ctx.body = {
+                statusCode: 1202,
+                message: '查询成功',
+                result: {
+                    articleArr: data
+                }
+            }
+        } catch(e) {
+            console.log(e);
         }
     }
 }

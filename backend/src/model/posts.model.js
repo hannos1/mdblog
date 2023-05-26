@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize'); // 导入数据类型
 const seq = require('../database/seq');
+const Users = require('./users.model');
 
 // 创建模型 会自动推导表名，在其后加s 即 posts
 const Posts = seq.define('post', {
@@ -28,6 +29,10 @@ const Posts = seq.define('post', {
     paranoid: true  // 添加删除字段，记录文章被删除的时间
 });
 // 默认情况下，会使用数据类型DataTypes.DATE自动向每个模型添加createAt和updateAt，文章正好需要这两个字段，故不需要禁止添加
+
+// 建立外键，使用userID
+Users.hasOne(Posts)
+Posts.belongsTo(Users);
 
 // Posts.sync({ // 模型同步，创建该表
 //     force: true // 数据库如果存在该表，则先删除
