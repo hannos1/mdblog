@@ -131,3 +131,6 @@ dist
 
 # 测试文件
 test
+
+# 系统存储文件
+storage
