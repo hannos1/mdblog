@@ -3,9 +3,10 @@ const fs = require('fs');
 const { marked } = require('marked');
 
 const { publishError, modifyError, searchError } = require('../constant/err.types');
-const { searchLatestPost, publishPost, searchPosts, getPostInfo, modifyPost, searchBlur } = require('../service/posts.service')
-const { getUserInfo } = require('../service/users.service')
-const { ROOT_DIR } = require('../config/config.default')
+const { searchLatestPost, publishPost, searchPosts, getPostInfo, modifyPost, searchBlur } = require('../service/posts.service');
+const { getUserInfo } = require('../service/users.service');
+const { ROOT_DIR } = require('../config/config.default');
+const { count } = require('../service/likes.service');
 
 const storePost = async (newPath, newFilename, oldPath) => {
     if (!fs.existsSync(newPath)) {
@@ -33,18 +34,26 @@ const getHTMLContent = (filePath) => {
 // 控制层，是路由的最后一个需要调用的函数，不需要再使用next放行了
 class PostsController {
     async getInitData(ctx, next) {
-        const { articleNum } = ctx.request.query;
+        const { articleNum, uid: userId } = ctx.request.query;
         try {
-            const res = await searchLatestPost(articleNum);
-            const data = res.map(post => {
-                return {
+            const res = await searchLatestPost({ articleNum, userId });
+            const data = [];
+            // 使用map无法异步等待，导致结果都为空
+            for (let i = 0; i < res.length; ++i) {
+                const post = res[i];
+                const likesNum = await count({ postId: post.id });
+                const liked = await count({ postId: post.id, userId });
+                const item = {
                     articleId: post.id,
                     username: post.username,
                     deployDate: post.updatedAt,
                     title: post.title,
-                    summary: post.summary
-                }
-            });
+                    summary: post.summary,
+                    likesNum,
+                    liked
+                };
+                data.push(item);
+            }
             ctx.body = {
                 statusCode: 1206,
                 message: "查询成功",
@@ -58,14 +67,13 @@ class PostsController {
     }
     async publish(ctx, next) {
         try {
-            const user = await getUserInfo({ username: ctx.request.body.username });
+            const { uid: userId } = ctx.request.body;
             const oldPath = ctx.request.files.mdPost.filepath,
                 newFilename = ctx.request.files.mdPost.newFilename,
-                newPath = path.join(ROOT_DIR, `storage/${user.id}`);
-            console.log(newPath);
-            await storePost(newPath, newFilename, oldPath);
-            const res = await publishPost({ ...ctx.request.body, userId: user.id, filePath: path.join(newPath, newFilename) });
+                newPath = path.join(ROOT_DIR, `storage/${userId}`);
 
+            await storePost(newPath, newFilename, oldPath);
+            const res = await publishPost({ ...ctx.request.body, userId, filePath: path.join(newPath, newFilename) });
             ctx.body = {
                 statusCode: 1201,
                 message: '上传成功',
@@ -73,7 +81,7 @@ class PostsController {
                     articleId: res.id,
                     username: res.username,
                     title: res.title,
-                    uploadDate: res.createdAt
+                    uploadDate: res.updatedAt
                 }
             };
         } catch (e) {
@@ -159,18 +167,25 @@ class PostsController {
 
     }
     async searchByTitle(ctx, next) {
-        const { title } = ctx.request.body;
+        const { title, uid: userId } = ctx.request.body;
         try {
-            const posts = await searchBlur(title);
-            const data = posts.map(post => {
-                return {
+            const posts = await searchBlur({ title, userId });
+            const data = [];
+            for (let i = 0; i < posts.length; ++i) {
+                const post = posts[i];
+                const likesNum = await count({ postId: post.id });
+                const liked = await count({ postId: post.id, userId });
+                const item = {
                     articleId: post.id,
+                    username: post.username,
                     deployDate: post.updatedAt,
                     title: post.title,
-                    username: post.username,
-                    summary: post.summary
-                }
-            });
+                    summary: post.summary,
+                    likesNum,
+                    liked
+                };
+                data.push(item);
+            }
             ctx.body = {
                 statusCode: 1207,
                 message: "查询成功",
@@ -178,7 +193,8 @@ class PostsController {
                     articleArr: data
                 }
             }
-        } catch(e) {
+        } catch (e) {
+            console.log(e);
             ctx.body = searchError;
         }
     }

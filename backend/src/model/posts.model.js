@@ -37,7 +37,6 @@ const Posts = seq.define('post', {
 // 默认情况下，会使用数据类型DataTypes.DATE自动向每个模型添加createAt和updateAt，文章正好需要这两个字段，故不需要禁止添加
 
 // 建立外键，使用userID
-Users.hasOne(Posts)
 Posts.belongsTo(Users);
 
 // Posts.sync({ // 模型同步，创建该表

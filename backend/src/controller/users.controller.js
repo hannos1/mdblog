@@ -76,9 +76,8 @@ class UserController {
         }
     }
     async avatarUpload(ctx, next) {
-        const { username } = ctx.request.body;
+        const { uid: id } = ctx.request.body;
         const filepath = ctx.request.files.avatarFile.filepath;
-        const { id } = await getUserInfo({ username });
         const outputPath = path.join(ROOT_DIR, `public/${id}`);
         // 目录不存在则创建
         if (!fs.existsSync(outputPath)) {

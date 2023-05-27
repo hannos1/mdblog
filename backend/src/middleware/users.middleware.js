@@ -10,6 +10,17 @@ const {
 } = require('../constant/err.types')
 const bcrpty = require('bcryptjs');     // 用于将密码散列（哈希）为安全的字符串
 
+const checkIdIsValid = async (ctx, next) => {
+    const { uid } = ctx.request.body;
+    const user = await getUserInfo({ id: uid });
+    if (!user) {
+        console.log(`当前${uid}无效，数据库中不存在`);
+        ctx.body = userDoesNotExist;
+        return;
+    }
+    await next();
+}
+
 const userValidator = async (ctx, next) => {  // 校验用户合法性
     const { username, password } = ctx.request.body;
     // 合法
@@ -81,5 +92,6 @@ module.exports = {
     verifyUser,
     crpytPassword,
     verifyLogin,
-    checkPasswordsAreSame
+    checkPasswordsAreSame,
+    checkIdIsValid
 };

@@ -1,11 +1,21 @@
 const { Op } = require('sequelize');
 const Posts = require('../model/posts.model');
+const { search } = require('./blacks.service');
+const { getUserInfo } = require('./users.service');
 
 class PostsService {
     // 根据数量查询文章数据
-    async searchLatestPost(articleNum) {
+    async searchLatestPost({ articleNum, userId }) {
+        // 查找当前用户所拉黑的用户
+        const bids = await search(userId);
+
         articleNum = +articleNum;   // 必须是数值类型
         let posts = await Posts.findAll({
+            where: {
+                userId: {
+                    [Op.notIn]: bids    // 去除掉拉黑用户的文章
+                }
+            },
             order: [
                 ['updatedAt', 'DESC']
             ],
@@ -53,17 +63,21 @@ class PostsService {
             where: whereOp
         });
     }
-    async searchBlur(title) {
+    async searchBlur({ title, userId }) {
         let blurTitle = '.*';
         // 拼接模糊查询字符串，保证只要输入对应关键字就可以查询，即使关键字中间不连续也可以
-        for(let i = 0;i < title.length;++ i) {
+        for (let i = 0; i < title.length; ++i) {
             blurTitle += title[i] + '.*';
         }
-        
+        const bids = await search(userId);
+
         let posts = await Posts.findAll({
             where: {
                 title: {
                     [Op.regexp]: blurTitle
+                },
+                userId: {
+                    [Op.notIn]: bids    // 去掉拉黑用户的文章
                 }
             }
         });

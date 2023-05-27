@@ -72,5 +72,13 @@ module.exports = {
         statusCode: 1405,
         message: "查询失败",
         result: {}
+    },
+    FailToBlack: {
+        statusCode: 4401,
+        message: "拉黑失败"
+    },
+    FailToCancel: {
+        statusCode: 4402,
+        message: "取消拉黑失败"
     }
 }
