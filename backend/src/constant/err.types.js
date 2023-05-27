@@ -62,5 +62,15 @@ module.exports = {
         statusCode: 1403,
         message: "头像上传失败",
         result: {}
+    },
+    modifyError: {
+        statusCode: 1404,
+        message: "修改文章失败",
+        result: {}
+    },
+    searchError: {
+        statusCode: 1405,
+        message: "查询失败",
+        result: {}
     }
 }

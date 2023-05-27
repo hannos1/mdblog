@@ -6,11 +6,7 @@ const { errDateType } = require('../constant/err.types')
 const contentHash = async (ctx, next) => {  // 将文章内容变哈希字符串
     const filepath = ctx.request.files.mdPost.filepath;
     const fileContent = fs.readFileSync(filepath);
-    fs.unlink(filepath, (err) => {
-        if (err) {
-            throw err;
-        }
-    });
+
     const hash = crypto.createHash('sha256');
     hash.update(fileContent);
     ctx.request.body.contentHash = hash.digest('hex');  // 以16进制返回哈希值
@@ -20,10 +16,10 @@ const contentHash = async (ctx, next) => {  // 将文章内容变哈希字符串
 const checkType = async (ctx, next) => {
     const file = ctx.request.files.mdPost;
     // mimetype = 'text/markdown'    检查文件类型是否是md格式
-    if(file.mimetype !== 'text/markdown') {
+    if (file.mimetype !== 'text/markdown') {
         ctx.body = errDateType;
-        return ;
-    } 
+        return;
+    }
     await next();
 }
 

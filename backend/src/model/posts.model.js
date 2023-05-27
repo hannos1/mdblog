@@ -24,9 +24,15 @@ const Posts = seq.define('post', {
         type: DataTypes.STRING,
         allowNull: false,
         comment: "文章内容哈希值，修改之后对比，如果一样就不需要使用IO操作写入文件"
+    },
+    filePath: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        comment: '文章存放的路径'
     }
 }, {
-    paranoid: true  // 添加删除字段，记录文章被删除的时间
+    paranoid: true,  // 添加删除字段，记录文章被删除的时间
+    createdAt: false    // 有updatedAt就行
 });
 // 默认情况下，会使用数据类型DataTypes.DATE自动向每个模型添加createAt和updateAt，文章正好需要这两个字段，故不需要禁止添加
 
