@@ -1,25 +1,11 @@
-export type ArticleAuthor = {
-    authorName:string;
-    authorId:number;
-}
-
-export type ArticleDate = {
-    date:Date | string
-}
-
-export type ArticleFile = {
-    fileid:number;
-}
-
 export type Article = {
-    id:number;
-    title:string;
-    author:ArticleAuthor;
-    deployDate:ArticleDate;
-    file:ArticleFile;
-    description:string;
-    likesNum:number;
-    liked:boolean;
+    id:number;  // 文章id
+    title:string;  // 标题
+    author:string;  // 文章作者
+    deployDate:Date | string; // 发布日期
+    description:string;  // 摘要
+    likesNum:number;  // 点赞数
+    liked:boolean;  // 是否被点赞
 }
 
 export type ArticleList = Array<Article>

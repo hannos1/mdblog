@@ -1,7 +1,7 @@
 import {stringToNumber,stringToString} from '~/types/hooks.type'
 
 export const useDateBefore = (
-    time:Date,
+    time:Date | string,
     specificTime?:Date
 ):string => {
     let timeDeviation:number = specificTime ? Date.parse(specificTime.toLocaleString()) : Date.now()

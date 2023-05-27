@@ -35,5 +35,9 @@ export default defineNuxtConfig({
             ? ["naive-ui", "vueuc", "date-fns-tz/esm/formatInTimeZone"]
             : []
       }
-    }
+    },
+    plugins: [
+      // { src: '~/plugins/naiveui.ts', ssr:false, mode:'client'},
+      // { src: '~/plugins/server-html-inject.ts', ssr:true, mode:'server'}
+    ]
   });

@@ -13,45 +13,72 @@
             </div>
             <div class="h-7 relative w-20 text-center leading-7 text-base text-slate-400">
                 <NuxtLink to="?article_mode=time">
-                    <span href="?article_mode=time" :class="{ar_active:article_mode === 'time'}" class="ar hover:text-blue-400">
+                    <span :class="{ar_active:article_mode === 'time'}" class="ar hover:text-blue-400">
                         最新
                     </span>
                 </NuxtLink>
             </div>
         </div>
         <div class="h-auto w-full inline-block">
-            <div class="w-full relative px-6 pt-4" v-if="isloading">
+            <div class="w-full relative px-6 pt-4" v-if="state.isloading">
                 <n-skeleton text :repeat="1" style="width: 40%" /> 
                 <n-skeleton text :repeat="1" style="width: 70%" /> 
                 <n-skeleton text :repeat="2" /> 
                 <n-skeleton text :repeat="1" style="width: 70%" /> 
-            </div>
-            <div class="w-auto h-auto" v-for="item in articleList" :key="item.id">
-                <Card :article="item"></Card>
+            </div>    
+            <div class="w-auto h-auto" v-for="item in state.articleList" :key="item.id">
+                <Card :article="item" @likeOne="likeOne" @deleteOne="deleteOne"></Card>
             </div>
         </div>
     </main>
 </template>
 
 <script setup lang="ts">
-import {articleList as postData} from '~/mock/article'
+import { Ref } from 'vue';
 import { Article } from '../types/article.type';
+import {eventData_type1} from '../types/emits.type'
+import _ from 'lodash'
 const route = useRoute()
+const articleStore = useArticleStore()
 
+let state = reactive({
+    articleList:[] as Article[],
+    isloading:true as boolean
+})
 let article_mode = computed(() => {
     return route.query.article_mode || 'name'
 })
-let articleList = reactive<Article[]>([])
 
-let isloading = ref(true)
+/**
+ * 点赞或者取消赞
+ * @param id 文章id
+ */
+function likeOne(id:number){
+    articleStore.likeOneSync(id)
+}
+
+/**
+ * 从文章列表中删除某个文章
+ * @param eventData 包括文章id 和是否异步resolve
+ */
+function deleteOne(eventData:eventData_type1){
+    if(eventData.res){
+        articleStore.deleteOneAsync(eventData.id)
+            .then(() => {
+                eventData.res!()
+            })
+    }else{
+        articleStore.deleteOneSync(eventData.id)
+    }
+}
 
 onMounted(() => {
-    console.log(route.query)
-    setTimeout(() => {
-        articleList = postData
-        isloading.value = false
-    }, 2000);
-    
+    articleStore.init()
+        .then((res) => {
+            state.articleList = articleStore.state.articleList
+            state.isloading = false
+            console.log(res)
+        })
 })
 
 </script>
