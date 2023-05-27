@@ -55,7 +55,7 @@ class PostsController {
                 data.push(item);
             }
             ctx.body = {
-                statusCode: 1206,
+                statusCode: 1202,
                 message: "查询成功",
                 result: {
                     articleArr: data
@@ -155,7 +155,7 @@ class PostsController {
             const post = await getPostInfo({ id });
             const html = getHTMLContent(post.filePath);
             ctx.body = {
-                statusCode: 1205,
+                statusCode: 1202,
                 message: "查询成功",
                 result: {
                     htmlStr: html
@@ -187,7 +187,7 @@ class PostsController {
                 data.push(item);
             }
             ctx.body = {
-                statusCode: 1207,
+                statusCode: 1202,
                 message: "查询成功",
                 result: {
                     articleArr: data

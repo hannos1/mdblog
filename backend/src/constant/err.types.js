@@ -35,17 +35,17 @@ module.exports = {
         result: {}
     },
     tokenExpiredError: {
-        statusCode: 2408,
+        statusCode: 2409,
         message: 'token过期',
         result: {}
     },
     invalidToken: {
-        statusCode: 2409,
+        statusCode: 2410,
         message: '无效的token',
         result: {}
     },
     changePasswordFail: {
-        statusCode: 2410,
+        statusCode: 2411,
         message: '修改密码失败'
     },
     publishError: {
