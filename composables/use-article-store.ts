@@ -20,6 +20,7 @@ export const useArticleStore = defineStore('article', () => {
     }
 
     const likeOneSync = (id:number) => { // 同步修改一篇文章是否被点赞
+        //发请求
         changeOneLiked(id)
     }
 
