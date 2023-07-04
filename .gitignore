@@ -14,11 +14,11 @@ babel.config.js
 .serverless/
 
 # dotenv environment variable files
-.env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
+backend/.env.development.local
+backend/.env.test.local
+backend/.env.production.local
+backend/.env.local
+backend/.env
 
 # FuseBox cache
 .fusebox/
