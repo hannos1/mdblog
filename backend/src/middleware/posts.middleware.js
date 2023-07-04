@@ -23,7 +23,22 @@ const checkType = async (ctx, next) => {
     await next();
 }
 
+const ifNoLogin = async (ctx, next) => {
+    let { uid: buid } = ctx.request.body;
+    if(!buid) {
+        buid = 0;
+        ctx.request.body.uid = buid;
+    }
+    let { uid: quid } = ctx.request.query;
+    if(!quid) {
+        quid = 0;
+        ctx.request.query = quid;
+    }
+    await next();
+}
+
 module.exports = {
     contentHash,
-    checkType
+    checkType,
+    ifNoLogin
 };
