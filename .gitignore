@@ -3,9 +3,37 @@ node_modules
 .nuxt
 .nitro
 .cache
-.output
-.env
-dist
-mock/
 __test__
+mock/
 babel.config.js
+
+# Docusaurus cache and generated files
+.docusaurus
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# 测试文件
+test
+
+# 系统存储文件
+storage

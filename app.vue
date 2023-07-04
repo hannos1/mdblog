@@ -28,13 +28,13 @@ useHead({
 
 onMounted(()=> {
   
-  const currentUserFromStorage = useLocalStorage('currentUser')
-  console.log(currentUserFromStorage,'////')
+  // const currentUserFromStorage = useLocalStorage('currentUser')
+  // console.log(currentUserFromStorage,'////')
 
-  if(currentUserFromStorage) {
-    const currentUser = useState('currentUser')
-    currentUser.value = currentUserFromStorage
-  }
+  // if(currentUserFromStorage) {
+  //   const currentUser = useState('currentUser')
+  //   currentUser.value = currentUserFromStorage
+  // }
 })
 </script>
 
