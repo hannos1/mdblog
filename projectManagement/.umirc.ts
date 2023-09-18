@@ -1,5 +1,5 @@
 import { defineConfig } from '@umijs/max';
-import route from 'routes';
+import routes from './src/routes';
 
 export default defineConfig({
   antd: {},
@@ -10,6 +10,6 @@ export default defineConfig({
   layout: {
     title: 'mdblogManagement',
   },
-  routes: route,
+  routes: routes,
   npmClient: 'pnpm',
 });
