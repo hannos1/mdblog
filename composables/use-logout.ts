@@ -1,5 +1,5 @@
 export const useLogout = () => {
-    const currentUser = useState('currentUser')
-    currentUser.value = null
-    useLocalStorage('currentUser',null)
-}
+  const currentUser = useState('currentUser');
+  currentUser.value = null;
+  useLocalStorage('token', null);
+};

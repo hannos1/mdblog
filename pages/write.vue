@@ -1,6 +1,4 @@
-<template>
-  <div>post</div>
-</template>
+<template><div>写文章</div></template>
 
 <script setup lang="ts"></script>
 

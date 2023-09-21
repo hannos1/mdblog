@@ -1,43 +1,48 @@
-import Components from 'unplugin-vue-components/vite'
-import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
+import Components from 'unplugin-vue-components/vite';
+import { NaiveUiResolver } from 'unplugin-vue-components/resolvers';
 
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
-    ssr: true,
-    modules: [
-      '@vueuse/nuxt',
-      '@pinia/nuxt',
-      '@nuxtjs/tailwindcss'
-    ],
-    runtimeConfig:{
-        public:{
-            apiBaseUrl:'https://nid-node.ninghao.co'
-        }
+  ssr: true,
+  modules: ['@vueuse/nuxt', '@pinia/nuxt', '@nuxtjs/tailwindcss'],
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: 'http://127.0.0.1:3000',
     },
-    build: {
-      transpile:
-        process.env.NODE_ENV === 'production'
-          ? ['naive-ui', "vueuc", '@css-render/vue3-ssr', '@juggle/resize-observer']
-          : ['@juggle/resize-observer']
-    },
-    vite: {
-      ssr: {
-        noExternal: ['naive-ui']
-      },
-      plugins: [
-        Components({
-          resolvers: [NaiveUiResolver()]
-        }),
-      ],
-      optimizeDeps: {
-        include:
-          process.env.NODE_ENV === "development"
-            ? ["naive-ui", "vueuc", "date-fns-tz/esm/formatInTimeZone"]
-            : []
-      }
+  },
+  build: {
+    transpile:
+      process.env.NODE_ENV === 'production'
+        ? [
+            'naive-ui',
+            'vueuc',
+            '@css-render/vue3-ssr',
+            '@juggle/resize-observer',
+          ]
+        : ['@juggle/resize-observer'],
+  },
+  vite: {
+    ssr: {
+      noExternal: ['naive-ui'],
     },
     plugins: [
-      // { src: '~/plugins/naiveui.ts', ssr:false, mode:'client'},
-      // { src: '~/plugins/server-html-inject.ts', ssr:true, mode:'server'}
-    ]
-  });
+      Components({
+        resolvers: [NaiveUiResolver()],
+      }),
+    ],
+    optimizeDeps: {
+      include:
+        process.env.NODE_ENV === 'development'
+          ? [
+              'naive-ui',
+              'vueuc',
+              'date-fns-tz/esm/formatInTimeZone',
+            ]
+          : [],
+    },
+  },
+  plugins: [
+    // { src: '~/plugins/naiveui.ts', ssr:false, mode:'client'},
+    // { src: '~/plugins/server-html-inject.ts', ssr:true, mode:'server'}
+  ],
+});

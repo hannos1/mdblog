@@ -22,12 +22,19 @@
           placeholder="输入密码"
         />
       </n-form-item>
-      <NuxtLink to="/register" style="font-size: 12px"
-        >没有账号？注册一个</NuxtLink
+      <n-form-item first label="确认密码" path="password">
+        <n-input
+          v-model:value="formValue.confirmPassword"
+          type="password"
+          placeholder="输入密码"
+        />
+      </n-form-item>
+      <NuxtLink to="/login" style="font-size: 12px"
+        >已有账号？登陆</NuxtLink
       >
       <n-form-item>
         <n-button attr-type="button" @click="login">
-          登陆
+          注册
         </n-button>
       </n-form-item>
     </n-form>
@@ -42,7 +49,7 @@ import type {
 } from '~~/types/user.type';
 
 useHead({
-  title: '登录',
+  title: '注册',
 });
 
 const router = useRouter();
@@ -51,8 +58,8 @@ const formRef = ref<FormInst | null>(null);
 const formValue = ref({
   name: '',
   password: '',
+  confirmPassword: '',
 });
-const currentUser = useState<CurrentUser>('currentUser');
 const rules = {
   name: {
     required: true,
@@ -74,26 +81,41 @@ const rules = {
       return true;
     },
   },
+  confirmPassword: {
+    required: true,
+    trigger: ['input'],
+    validator: (rule: FormItemRule, value: string) => {
+      if (formValue.value.confirmPassword.trim() === '') {
+        return new Error('密码不能为空');
+      }
+      if (
+        formValue.value.confirmPassword !==
+        formValue.value.password
+      ) {
+        return new Error('两次密码不一样');
+      }
+      return true;
+    },
+  },
 };
 
-const userLogin = async () => {
+const userRegister = async () => {
   const { data } = await useApiFetch<BaseRequest<CurrentUser>>(
-    'user/login',
+    'user/register',
     {
       method: 'POST',
       body: {
         username: formValue.value.name,
         password: formValue.value.password,
+        confirmPassword: formValue.value.confirmPassword,
       },
     },
   );
-  if (data.value?.statusCode === 2202) {
-    currentUser.value = data.value.result;
-    useLocalStorage('token', data.value.result.token);
-    router.push('/');
-    message.success('登陆成功');
+  if (data.value?.statusCode === 2201) {
+    router.push('/login');
+    message.success('注册成功');
   } else {
-    message.error('账号或密码错误！');
+    message.error(`${data.value?.message}`);
   }
 };
 
@@ -101,7 +123,7 @@ const login = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
-      userLogin();
+      userRegister();
     } else {
       console.log(errors);
       message.error('输入格式有误！');

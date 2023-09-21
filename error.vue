@@ -1,6 +1,3 @@
 <template>
-    <div>
-        404 not found
-        <div @click="navigateTo({path:'/'})">回到首页</div>
-    </div>
+  <div>404 not found</div>
 </template>
